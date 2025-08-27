@@ -1,0 +1,8 @@
+# Python-specific files
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Database files to ignore
+faiss_db/
