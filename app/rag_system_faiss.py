@@ -1,4 +1,13 @@
+import sys
 import os
+
+# --- CRITICAL FIX FOR ModuleNotFoundError ---
+# Add the parent directory (project root) to Python's path.
+# This ensures that 'app' is discoverable as a package when this script runs.
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# --- END CRITICAL FIX ---
+
+
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import TextLoader
@@ -7,7 +16,7 @@ from langchain.schema import Document
 from typing import List
 import glob
 
-# Import settings from our config file
+# Import settings from our config file (now it can find 'app.config')
 from app.config import settings
 
 # Define the path to your knowledge base documents
