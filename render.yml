@@ -6,8 +6,7 @@ services:
       pip install --upgrade pip
       pip install -r requirements.txt
     startCommand: |
-      export PYTHONPATH=$PYTHONPATH:. # Add current directory to Python's path
-      python app/rag_system_faiss.py && uvicorn app/main:app --host 0.0.0.0 --port $PORT
+      python -m app.rag_system_faiss && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: OLLAMA_HOST
         value: http://127.0.0.1:11434
