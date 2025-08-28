@@ -16,7 +16,7 @@ from langchain.schema import Document
 from typing import List
 import glob
 
-# Import settings from our config file (now it can find 'app.config')
+# Import settings from our config file
 from app.config import settings
 
 # Define the path to your knowledge base documents
@@ -34,6 +34,7 @@ class OveloRAGSystem:
     def __init__(self):
         self.vector_store = None
         self.embeddings = HuggingFaceEmbeddings(
+            # Use the embedding model name from settings
             model_name=settings.HUGGINGFACE_EMBEDDING_MODEL
         )
         
@@ -62,7 +63,6 @@ class OveloRAGSystem:
         
         if not documents:
             print("❌ No documents found!")
-            # Exit with an error status so Render's build fails early if no documents
             raise RuntimeError("No knowledge base documents found. Cannot build FAISS index.")
         
         text_splitter = RecursiveCharacterTextSplitter(
@@ -98,11 +98,8 @@ class OveloRAGSystem:
             return None
 
 if __name__ == "__main__":
-    # This block will run when rag_system_faiss.py is executed directly
-    # It will initialize and save the FAISS database.
     rag_system = OveloRAGSystem()
     vector_store = rag_system.initialize_knowledge_base()
 
     if vector_store:
         print("\nLocal FAISS knowledge base built and saved successfully.")
-        # You can add local testing logic here if needed

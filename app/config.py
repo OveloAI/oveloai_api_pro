@@ -1,5 +1,4 @@
 import os
-
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
@@ -19,8 +18,10 @@ class Settings(BaseSettings):
     RECEIVER_EMAIL: str = os.getenv("RECEIVER_EMAIL")
 
     # AI settings
+    OLLAMA_HOST: str = os.getenv("OLLAMA_HOST", "http://localhost:11434") # New: Default to localhost, will be changed to VM IP
     OLLAMA_MODEL: str = os.getenv("OLLAMA_MODEL", "phi3:mini")
     FAISS_DB_PATH: str = os.getenv("FAISS_DB_PATH", "faiss_db")
+    # --- REVERTED TO ORIGINAL EMBEDDING MODEL FOR QUALITY ---
     HUGGINGFACE_EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
 
     # Lead capture phrases

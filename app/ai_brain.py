@@ -21,7 +21,6 @@ def get_ai_response(message: str):
         dict: A dictionary containing the generated response and confidence score.
     """
     # Load the persisted FAISS vector store using the path from our config file.
-    # We now use the same embedding model that created the index.
     embeddings = HuggingFaceEmbeddings(model_name=settings.HUGGINGFACE_EMBEDDING_MODEL)
 
     if not os.path.exists(settings.FAISS_DB_PATH):
@@ -36,11 +35,11 @@ def get_ai_response(message: str):
     # Set up the retriever to search the FAISS vector store for top 3 results
     retriever = vector_store.as_retriever(search_kwargs={"k": 3})
 
-    # Initialize the Ollama LLM using the model name from our config
-    llm = Ollama(model=settings.OLLAMA_MODEL)
+    # Initialize the Ollama LLM using the model name from our config and the base_url
+    # This will now connect to the Ollama server running on its own VM (or localhost if settings specify)
+    llm = Ollama(model=settings.OLLAMA_MODEL, base_url=settings.OLLAMA_HOST)
     
     # Define the prompt template for the LLM. This is where we provide context.
-    # The prompt now includes your updated business description.
     template = """
     You are an AI assistant for a web development, automation systems, and high intelligent AI business named OveloAI. 
     Use the following retrieved context to answer the user's question. If you don't 
